@@ -1,187 +1,217 @@
-# Peeyush's interview notebook
+# Peeyush's Commonplace Book
 
-A GitHub Pages blog for `rpeeyush.github.io`. Upload notes; the publishing workflow builds the site automatically.
+A collection of passages, ideas, observations, and reflections worth keeping and returning to. This book brings together what I read in fiction and non-fiction, discover on the internet, and explore through Hinduism.
 
-## Publish once
+**Read:** https://rpeeyush.github.io/  
+**Repository:** https://github.com/rpeeyush/rpeeyush.github.io
 
-1. Copy the **contents** of this `blog` folder into the root of `rpeeyush/rpeeyush.github.io`. Include the hidden `.github` folder. Keep any existing files you need; review changes before committing.
-2. Commit and push to `main`.
-3. In the repository, open **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-4. Open **Actions → Publish interview blog**. Wait for a successful run. If the initial run failed before Pages was enabled, rerun it.
-5. Visit https://rpeeyush.github.io/.
+## Purpose
 
-## Add notes
+Collect what catches my attention, record where it came from, and add my own understanding. Entries can be short quotations, reading notes, questions, connections between books, or longer reflections. This is a personal reference and a growing conversation with what I read, rather than an interview-preparation notebook.
 
-Use these folders (nested subfolders also work):
+## Current transition status
 
-```
+The content folders have been reorganized, but the website builder still has the old interview-blog configuration. Updating this README does not change the website's layout or publishing logic.
+
+Before adding entries for publication:
+
+1. Update `FOLDERS` in `build.py` to match the categories below:
+
+   ```python
+   FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism']
+   ```
+
+2. Update the old interview wording in the generated page title, header/footer, and homepage copy. The homepage folder count is currently hard-coded to `5`; it should reflect the configured categories.
+3. Add a note or `.gitkeep` inside `content/Hinduism/` so Git retains that currently empty folder. The other three categories already contain `.gitkeep` files.
+
+The workflow is currently still named **Publish interview blog**. That existing name is the one to look for in Actions until it is renamed. It already runs on pushes to `main`.
+
+## Organization
+
+```text
 content/
-  GAPS/
-  Threat Hunting/
-  Guidelines/
-  Place Holder 2/
-  Place Holder 3/
+  Fiction/
+  Non-fiction/
+  From Internet/
+  Hinduism/
 ```
 
-On GitHub, open a folder and choose **Add file → Upload files**, select your `.md`, `.docx`, or `.pdf` files, and commit to `main`. You can also push them using Git. Every push rebuilds the folder lists and note pages. Renaming or deleting files updates the next build too.
+| Category | What belongs here |
+| --- | --- |
+| Fiction | Passages, characters, themes, and reflections from novels and stories |
+| Non-fiction | Ideas and reading notes from essays, history, biography, and other non-fiction |
+| From Internet | Links, short sourced excerpts, articles, and ideas encountered online |
+| Hinduism | Notes on texts, philosophy, traditions, interpretations, and personal reflections |
 
-- **Markdown:** headings, tables, code blocks, lists, and relative links/images. A first level-one heading supplies the page title; otherwise the filename is used. Front matter is optional and skipped.
-- **Word:** `.docx` content is converted into a readable article, including images and tables. Exact Word pagination and advanced formatting are not preserved. Old `.doc` files must first be saved as `.docx`.
-- **PDF:** displayed in the browser's PDF viewer with an original download link. Browsers without a viewer show an open/download fallback.
-- **Search:** searches note titles, folders, and the first 180 characters of Markdown/Word content. PDF text is not indexed.
+Nested subfolders can organize authors, books, or themes. The current builder groups their entries under the configured top-level category; it does not provide separate child-folder filters. When adding or renaming a top-level category, also update `FOLDERS` in `build.py`.
 
-There is no upload form on the public blog. Uploads happen in your GitHub repository. A file must be committed and the workflow must finish before it appears. Only upload material you intend to publish publicly. Keep note images next to the Markdown file and use relative image paths.
+## A suggested entry
 
-## Run locally
+Use a descriptive filename, such as `book-title-on-attention.md`. A first level-one heading supplies the page title; otherwise the filename is used. Front matter is optional and is skipped by the builder.
 
-Requires Python 3.13 (matching the workflow).
+```markdown
+# A thought worth keeping
 
+## Source
+
+- Author / speaker:
+- Book / article / text:
+- Page, chapter, verse, or URL:
+- Translator / edition, where relevant:
+- Date noted:
+
+## Passage or idea
+
+> A short excerpt, clearly distinguished from my own writing.
+
+## My reflection
+
+Why did this stay with me? What does it connect to? What do I question?
+
+## Related notes
+
+- [Another entry](another-entry.md)
 ```
+
+The template is a suggestion, not a requirement. Keep exact quotations separate from paraphrases and personal comments. Include source details that help you find the original again. For translations, distinguish the text from a translator's or commentator's interpretation. For internet material, keep a source link and your own notes rather than reproducing entire articles.
+
+## Supported files
+
+- **Markdown (`.md`):** headings, tables, lists, fenced code, relative document links, and images.
+- **Word (`.docx`):** converted into readable articles, including supported images and tables. Exact Word layout and pagination are not preserved. Save older `.doc` files as `.docx` first.
+- **PDF (`.pdf`):** embedded browser viewer with an original download link; browsers without a viewer offer an open/download fallback.
+- **Search:** note titles, categories, and the first 180 characters of Markdown/Word text. PDF contents are not indexed.
+
+Keep images beside the entry or in a relative subfolder, then reference them with a relative path. The root README is repository documentation; it is not rendered as a commonplace entry.
+
+**Everything published by this repository is public.** This blog currently has no special draft/staging-folder exclusion. Files anywhere under `content/` may be copied into the generated site's original-file area, even if their category is not listed in `FOLDERS`. Keep unpublished/private drafts outside `content/` and do not commit material you want kept private.
+
+## Working folder on this laptop
+
+```text
+C:\Users\Shashi-Peeyush\Downloads\rpeeyush-blog\repository
+```
+
+This is the actual Git clone. Edit entries inside its `content/` directory. The surrounding `Downloads\rpeeyush-blog` directory may contain an old extracted copy; it is not the working folder for this blog.
+
+## Add entries using Git
+
+Open PowerShell and download the latest changes before editing:
+
+```powershell
+cd "$env:USERPROFILE\Downloads\rpeeyush-blog\repository"
+git pull --ff-only
+```
+
+Add or edit entries in a category under `content/`, then:
+
+```powershell
+git status
+git add content
+git commit -m "Add commonplace entries"
+git push origin main
+```
+
+`git add content` includes additions, edits, and deletions beneath `content/`. For documentation or site changes, stage the relevant files explicitly, for example `git add README.md build.py`. Review `git status` before committing.
+
+Moving or deleting an entry updates the next build. Renaming an entry or changing its folder changes its generated page URL, so existing bookmarks to it may stop working.
+
+## Upload through GitHub's website
+
+1. Open this repository while signed in as **rpeeyush**.
+2. Navigate to the destination category under `content/`.
+3. Choose **Add file → Upload files**.
+4. Upload your files and commit to `main`.
+
+If GitHub creates a separate branch, merge its pull request into `main` to publish it. After a website upload, run `git pull --ff-only` in the local clone before making further local edits. There is no upload form on the public blog itself.
+
+## Publishing
+
+The GitHub Actions workflow installs dependencies, runs the tests, builds `dist/`, and deploys that generated site. Every push to `main` triggers it; **Run workflow** is only needed for an initial deployment or manual retry.
+
+Set **Settings → Pages → Build and deployment → Source → GitHub Actions**. Do not use branch publishing alongside the custom workflow: it can serve repository documentation instead of the generated homepage.
+
+Wait for both build and deploy to succeed, then refresh the site. Use **Ctrl + F5** if your browser shows an older version. The generated homepage is `dist/index.html`; it does not need to be created manually at the repository root.
+
+## Two blogs, two GitHub accounts
+
+| Site | Purpose | Local working folder |
+| --- | --- | --- |
+| `rpeeyush.github.io` | This commonplace book | `Downloads\rpeeyush-blog\repository` |
+| `peeyushrao.github.io` | Security notebook | `Downloads\peeyushrao-blog` |
+
+Run Git commands from the intended blog's working folder. Check its destination with `git remote -v`.
+
+For this commonplace book, select the correct account once per clone:
+
+```powershell
+git remote set-url origin https://rpeeyush@github.com/rpeeyush/rpeeyush.github.io.git
+git config user.name "Peeyush"
+git config user.email "EMAIL_FOR_RPEEYUSH"
+```
+
+Replace the email placeholder with the account's verified email or GitHub-provided private commit email. Name/email settings control commit attribution; the account in the remote URL helps select the login. Complete sign-in as **rpeeyush** when prompted. A saved login may be reused without a prompt. Never put a password or token in the URL.
+
+## Use another laptop
+
+Push your latest work from the old laptop first. Install [Git for Windows](https://git-scm.com/install/windows), reopen PowerShell, and clone this repository:
+
+```powershell
+cd "$env:USERPROFILE\Documents"
+git clone https://rpeeyush@github.com/rpeeyush/rpeeyush.github.io.git
+cd rpeeyush.github.io
+git config user.name "Peeyush"
+git config user.email "EMAIL_FOR_RPEEYUSH"
+```
+
+The new working folder is `Documents\rpeeyush.github.io`; use that folder instead of the Downloads path on this laptop. Continue with pull → edit → status → add → commit → push.
+
+To manage the separate security blog on that laptop too:
+
+```powershell
+cd "$env:USERPROFILE\Documents"
+git clone https://peeyushrao@github.com/peeyushrao/peeyushrao.github.io.git
+```
+
+Configure its commit identity inside its own clone and sign in as **peeyushrao** when pushing. You do not need the original ZIP, installer, Python, or another Pages setup to publish from another laptop. Python is only needed for local preview. Push before switching laptops and pull before editing on the other one.
+
+## Repository files and optional preview
+
+| Path | Purpose |
+| --- | --- |
+| `content/` | Entries, original documents, and related images |
+| `build.py` | Category configuration and static-site generation |
+| `assets/` | Layout styles and search/filter behavior |
+| `tests/` | Automated builder checks; retain this folder |
+| `.github/workflows/pages.yml` | Build and deployment automation |
+| `requirements.txt` | Python dependencies |
+| `dist/` | Generated site, excluded from Git |
+
+For a local preview, use Python 3.13, matching the workflow:
+
+```powershell
 python -m venv .venv
-# Windows:
 .venv\Scripts\python -m pip install -r requirements.txt
 .venv\Scripts\python -m unittest discover -s tests
 .venv\Scripts\python build.py
 .venv\Scripts\python -m http.server 8000 --directory dist
 ```
 
-On macOS/Linux use `.venv/bin/python`. Open http://localhost:8000. `dist/` is generated and should not be committed. The layout uses Google Fonts when available and system fonts offline.
+Open http://localhost:8000. On macOS/Linux use `.venv/bin/python`. Do not commit `.venv/`, `__pycache__/`, or `dist/`.
 
-## Git guide: managing both blogs
+## Troubleshooting
 
-Keep a separate local clone for each blog. The repository folder you run Git from determines which blog receives your changes.
+Start with `git status`, `git remote -v`, and `git log -1 --oneline` from this clone.
 
-| Blog | Folder on this laptop | Where notes belong |
-| --- | --- | --- |
-| `rpeeyush.github.io` | `Downloads\rpeeyush-blog\repository` | Inside `content\GAPS`, `content\Threat Hunting`, `content\Guidelines`, or another configured content folder |
-| `peeyushrao.github.io` | `Downloads\peeyushrao-blog\repository` | Inside topic folders such as `CrowdStrike\CQL`, `CWPP`, or `Windows` |
-
-Edit files inside the clone named `repository`, rather than the extracted ZIP's surrounding folder. Git publishes tracked changes in the clone. Check your destination at any time with:
-
-```powershell
-git remote -v
-```
-
-### Set the correct account for each blog (once per clone)
-
-For the interview blog:
-
-```powershell
-cd "$env:USERPROFILE\Downloads\rpeeyush-blog\repository"
-git remote set-url origin https://rpeeyush@github.com/rpeeyush/rpeeyush.github.io.git
-git config user.name "Peeyush"
-git config user.email "EMAIL_FOR_RPEEYUSH"
-```
-
-For the security blog:
-
-```powershell
-cd "$env:USERPROFILE\Downloads\peeyushrao-blog\repository"
-git remote set-url origin https://peeyushrao@github.com/peeyushrao/peeyushrao.github.io.git
-git config user.name "Peeyush Rao"
-git config user.email "EMAIL_FOR_PEEYUSHRAO"
-```
-
-Replace each email placeholder with that account's verified GitHub email or its GitHub-provided private commit email. These settings are local to the clone. `user.name` and `user.email` control commit attribution; the account in the remote URL guides Git Credential Manager's login selection. Never put passwords or tokens in the URL.
-
-### Everyday routine
-
-Open PowerShell in the appropriate clone, then download the latest changes **before editing**:
-
-```powershell
-git pull --ff-only
-```
-
-Add or edit your Markdown, Word (`.docx`), or PDF files using File Explorer or your editor. Then review, commit, and push:
-
-```powershell
-git status
-git add .
-git commit -m "Update notes"
-git push origin main
-```
-
-`git status` shows the pending changes. `git add .` stages additions, edits, and deletions beneath the current directory, so run it from the clone's root and check the listed files. `git commit` records them locally. `git push` sends your commits to GitHub.
-
-If you only want to publish content changes in the interview blog, use `git add content` instead. For changes to site files such as `build.py`, JavaScript, CSS, or this README, use `git add .` or explicitly stage those files.
-
-Choose the matching GitHub account when a login window appears. A saved login may be reused without a prompt.
-
-### Upload directly through GitHub's website
-
-1. Sign in to the correct account and open the correct repository.
-2. Navigate to the destination folder.
-3. Choose **Add file → Upload files**.
-4. Select your files and commit the changes to `main`.
-
-Both website uploads and Git pushes trigger the publishing workflow. If GitHub creates a separate branch, merge its pull request into `main` to publish those changes.
-
-After a website upload, run `git pull --ff-only` in that blog's local clone before making further local edits. This keeps the website and local copy synchronized.
-
-### Automatic publishing and folder behavior
-
-- GitHub Pages uses **Settings → Pages → Source → GitHub Actions**. This is a one-time setting for each repository.
-- Every push or website commit to `main` automatically builds and publishes the site.
-- Routine updates do not need **Run workflow**. Use it for a manual retry or an initial deployment after changing Pages settings.
-- The interview blog's workflow is **Publish interview blog**. The security blog's is **Publish security notes**.
-- Wait for both build and deploy to succeed, then refresh the site. On Windows, **Ctrl + F5** forces a refresh.
-- In the interview blog, the top-level folder names under `content/` must match `FOLDERS` in `build.py`; update that list when renaming a top-level folder.
-- In the security blog, new and renamed topic folders are discovered automatically. With the child-folder update installed, selecting CrowdStrike includes all its notes, while selecting its CQL child includes only that subtree.
-- Git does not track empty directories. Put a `.gitkeep` file in an empty folder if you want it retained.
-
-### Move to another laptop
-
-Push any unpushed work from the old laptop first. Install [Git for Windows](https://git-scm.com/install/windows) on the new laptop, reopen PowerShell, and clone both repositories:
-
-```powershell
-cd "$env:USERPROFILE\Documents"
-git clone https://rpeeyush@github.com/rpeeyush/rpeeyush.github.io.git
-git clone https://peeyushrao@github.com/peeyushrao/peeyushrao.github.io.git
-```
-
-Your new working folders are now:
-
-```text
-Documents/
-  rpeeyush.github.io/
-  peeyushrao.github.io/
-```
-
-Set your commit identity in each new clone, replacing the email placeholders:
-
-```powershell
-cd "$env:USERPROFILE\Documents\rpeeyush.github.io"
-git config user.name "Peeyush"
-git config user.email "EMAIL_FOR_RPEEYUSH"
-
-cd "$env:USERPROFILE\Documents\peeyushrao.github.io"
-git config user.name "Peeyush Rao"
-git config user.email "EMAIL_FOR_PEEYUSHRAO"
-```
-
-Use the same pull → edit → status → add → commit → push routine in the chosen new folder. Authenticate with the corresponding GitHub account when asked. You do not need the original ZIP, the installer, Python, or another Pages setup to publish updates: the repositories contain the blog source and GitHub runs the builds. Python is only needed for an optional local preview.
-
-When switching between laptops, push before leaving one and pull before editing on the other. You can also manage uploads through GitHub's website on any laptop.
-
-### Troubleshooting
-
-Run these from the affected clone:
-
-```powershell
-git status
-git remote -v
-git log -1 --oneline
-```
-
-| Message or symptom | What to do |
+| Symptom | Check |
 | --- | --- |
-| `ahead of origin/main` | Your commit is local; run `git push origin main`. |
-| `Everything up-to-date` | There are no unpushed commits. Check `git status` for unstaged files and confirm you edited the actual clone. |
-| `nothing to commit, working tree clean` | No file changes are waiting to be committed; this alone does not prove the new version is deployed. Check the latest commit and Actions run. |
-| `403` or `Permission denied to rpeeyush` for the security repository | Set its remote to `https://peeyushrao@github.com/peeyushrao/peeyushrao.github.io.git` and retry the push using the `peeyushrao` account. Do not create another commit for the same changes. |
-| Git asks who you are | Set `git config user.name` and `git config user.email` in that clone, then retry the commit. |
-| Push rejected because the remote contains new work | If your working tree is clean, run `git pull --rebase`, resolve any reported conflicts, then push. Preserve existing edits before attempting this; stop and ask for help if unsure. |
-| `git pull --ff-only` fails | Stop and inspect `git status`. Local edits or diverging commits need attention; do not discard them or force-push. |
-| Site still shows the old version | Check the correct repository's Actions tab. If no new run exists, verify your push. If the run failed, read the failed step. If it succeeded, use Ctrl + F5. |
+| New categories do not appear | Match their exact names in `build.py`'s `FOLDERS`; see the transition checklist above. |
+| Empty category missing from GitHub | Add an entry or `.gitkeep`; Git does not track empty directories. |
+| Working tree clean but expected changes missing | Confirm you edited this clone rather than the surrounding extracted copy. |
+| Branch ahead of `origin/main` | Commit is local; run `git push origin main`. |
+| Permission denied / HTTP 403 | Confirm the remote selects `rpeeyush` and authenticate with that account. |
+| Pull or push rejected | Inspect local changes and remote updates; do not discard edits or force-push. |
+| Workflow failed | Open the failed step in Actions and read its error. |
+| Old layout or README shown on the live site | Confirm Pages uses GitHub Actions, check the latest deployment, then Ctrl + F5. |
 
-Official references: [cloning repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), [multiple GitHub accounts with Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/multiple-users.md), and [GitHub Pages publishing settings](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+References: [cloning repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository), [multiple GitHub accounts](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/multiple-users.md), and [Pages publishing settings](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
