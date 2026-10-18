@@ -9,22 +9,15 @@ A collection of passages, ideas, observations, and reflections worth keeping and
 
 Collect what catches my attention, record where it came from, and add my own understanding. Entries can be short quotations, reading notes, questions, connections between books, or longer reflections. This is a personal reference and a growing conversation with what I read, rather than an interview-preparation notebook.
 
-## Current transition status
+## Site configuration
 
-The content folders have been reorganized, but the website builder still has the old interview-blog configuration. Updating this README does not change the website's layout or publishing logic.
+The builder now uses the four commonplace-book categories below. Its page titles,
+header, homepage copy, and category count match this book. The count is derived
+from `FOLDERS` in `build.py` instead of being hard-coded.
 
-Before adding entries for publication:
-
-1. Update `FOLDERS` in `build.py` to match the categories below:
-
-   ```python
-   FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism']
-   ```
-
-2. Update the old interview wording in the generated page title, header/footer, and homepage copy. The homepage folder count is currently hard-coded to `5`; it should reflect the configured categories.
-3. Add a note or `.gitkeep` inside `content/Hinduism/` so Git retains that currently empty folder. The other three categories already contain `.gitkeep` files.
-
-The workflow is currently still named **Publish interview blog**. That existing name is the one to look for in Actions until it is renamed. It already runs on pushes to `main`.
+The workflow is currently still named **Publish interview blog**. This is only
+its existing Actions label; it builds the commonplace book and runs automatically
+on pushes to `main`.
 
 ## Organization
 
@@ -89,7 +82,7 @@ Keep images beside the entry or in a relative subfolder, then reference them wit
 ## Working folder on this laptop
 
 ```text
-C:\Users\Shashi-Peeyush\Downloads\rpeeyush-blog\repository
+C:\Users\Username\Downloads\rpeeyush-blog\repository
 ```
 
 This is the actual Git clone. Edit entries inside its `content/` directory. The surrounding `Downloads\rpeeyush-blog` directory may contain an old extracted copy; it is not the working folder for this blog.
@@ -184,7 +177,7 @@ Configure its commit identity inside its own clone and sign in as **peeyushrao**
 | `assets/` | Layout styles and search/filter behavior |
 | `tests/` | Automated builder checks; retain this folder |
 | `.github/workflows/pages.yml` | Build and deployment automation |
-| `requirements.txt` | Python dependencies |
+| `requirements.txt` | Pinned, documented Markdown/Word rendering and HTML sanitizing dependencies |
 | `dist/` | Generated site, excluded from Git |
 
 For a local preview, use Python 3.13, matching the workflow:
@@ -205,7 +198,7 @@ Start with `git status`, `git remote -v`, and `git log -1 --oneline` from this c
 
 | Symptom | Check |
 | --- | --- |
-| New categories do not appear | Match their exact names in `build.py`'s `FOLDERS`; see the transition checklist above. |
+| New categories do not appear | Match their exact names in `build.py`'s `FOLDERS`; use the category names under Organization. |
 | Empty category missing from GitHub | Add an entry or `.gitkeep`; Git does not track empty directories. |
 | Working tree clean but expected changes missing | Confirm you edited this clone rather than the surrounding extracted copy. |
 | Branch ahead of `origin/main` | Commit is local; run `git push origin main`. |

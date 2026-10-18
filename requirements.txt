@@ -1,3 +1,7 @@
+# Commonplace-book build dependencies (Python 3.13).
+# Render Markdown, including tables, fenced code, and heading links.
 Markdown==3.9
+# Convert Word .docx entries into HTML; PDFs use the browser viewer.
 mammoth==1.11.0
+# Sanitize generated Markdown and Word HTML before publication.
 bleach==6.2.0

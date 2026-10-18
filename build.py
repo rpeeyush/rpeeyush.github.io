@@ -1,4 +1,4 @@
-"""Build a portable static notebook from Markdown, Word, and PDF documents."""
+"""Build a commonplace book from Markdown, Word, and PDF entries."""
 from pathlib import Path
 from html import escape, unescape
 from html.parser import HTMLParser
@@ -13,7 +13,7 @@ import mammoth
 import markdown
 
 ROOT = Path(__file__).resolve().parent
-FOLDERS = ['GAPS', 'Threat Hunting', 'Guidelines', 'Place Holder 2', 'Place Holder 3']
+FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism']
 TYPES = {'.md', '.docx', '.pdf'}
 
 def page_id(relative):
@@ -59,9 +59,9 @@ class LocalLinks(HTMLParser):
 def shell(title, body, prefix=''):
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{escape(title)} · Peeyush's notebook</title>
+<title>{escape(title)} · Peeyush's Commonplace Book</title>
 <link rel="stylesheet" href="{prefix}assets/style.css"></head><body>
-<header><a class="brand" href="{prefix}index.html"><span class="mark">P.</span> Peeyush / Notebook</a>
+<header><a class="brand" href="{prefix}index.html"><span class="mark">P.</span> Peeyush / Commonplace Book</a>
 <a class="repo" href="https://github.com/rpeeyush/rpeeyush.github.io">GitHub ↗</a></header>
 {body}<footer>Peeyush's commonplace book <span>Strength. Knowledge. Wisdom.</span></footer>
 </body></html>'''
@@ -124,16 +124,16 @@ def build(destination=None):
         buttons += f'<button class="folder" data-folder="{escape(folder)}">{escape(folder)} <span>{count}</span></button>'
     cards = ''.join(f'''<a class="card" href="{escape(e['url'])}" data-folder="{escape(e['folder'])}" data-search="{escape((e['title']+' '+e['excerpt']+' '+e['folder']).lower())}">
 <div class="card-top"><span>{escape(e['folder'])}</span><b>{e['type']}</b></div><h3>{escape(e['title'])}</h3><p>{escape(e['excerpt'])}</p><span class="read">Read note ↗</span></a>''' for e in entries)
-    home = f'''<main><section class="hero"><div class="eyebrow">THE INTERVIEW NOTEBOOK</div>
-<h1>A little more prepared.<br><em>One note at a time.</em></h1><p>A personal library for closing gaps, exploring threat hunting,<br class="desktop"> and turning what I learn into answers I can explain.</p>
-<div class="stats"><strong>{len(entries)}</strong> notes <i></i><strong>5</strong> folders <i></i>Always learning</div></section>
-<section class="library"><aside><div class="eyebrow">YOUR FOLDERS</div><nav aria-label="Filter notes by folder">{buttons}</nav>
-<div class="aside-note">A place for the questions<br>worth coming back to.</div></aside>
+    home = f'''<main><section class="hero"><div class="eyebrow">THE COMMONPLACE BOOK</div>
+<h1>A thought worth keeping.<br><em>A page worth returning to.</em></h1><p>Passages, ideas, and reflections gathered from books,<br class="desktop"> the internet, and the questions that stay with me.</p>
+<div class="stats"><strong>{len(entries)}</strong> notes <i></i><strong>{len(FOLDERS)}</strong> categories <i></i>Always learning</div></section>
+<section class="library"><aside><div class="eyebrow">COLLECTIONS</div><nav aria-label="Filter notes by collection">{buttons}</nav>
+<div class="aside-note">Read. Notice. Connect.<br>Keep what matters.</div></aside>
 <div class="notes"><div class="toolbar"><h2 id="folder-title">All notes</h2><label><span class="sr-only">Search notes</span><input id="search" type="search" placeholder="Search your notes…"></label></div>
 <p id="result-count" aria-live="polite">{len(entries)} notes in your library</p><div class="cards">{cards}</div>
 <div id="empty" hidden><h3>No notes here yet.</h3><p>Try another search, or upload a document to this folder on GitHub.</p></div></div></section></main>
 <script src="assets/app.js"></script>'''
-    (output / 'index.html').write_text(shell('Interview preparation', home), encoding='utf-8')
+    (output / 'index.html').write_text(shell('Commonplace Book', home), encoding='utf-8')
     (output / '.nojekyll').touch()
     print(f'Built {len(entries)} notes in {output}')
     return entries
