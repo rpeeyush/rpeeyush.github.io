@@ -63,7 +63,7 @@ def shell(title, body, prefix=''):
 <link rel="stylesheet" href="{prefix}assets/style.css"></head><body>
 <header><a class="brand" href="{prefix}index.html"><span class="mark">P.</span> Peeyush / Notebook</a>
 <a class="repo" href="https://github.com/rpeeyush/rpeeyush.github.io">GitHub ↗</a></header>
-{body}<footer>Peeyush's interview notebook <span>Learn. Practise. Revisit.</span></footer>
+{body}<footer>Peeyush's commonplace book <span>Strength. Knowledge. Wisdom.</span></footer>
 </body></html>'''
 
 def build(destination=None):
