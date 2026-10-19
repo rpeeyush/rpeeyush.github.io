@@ -36,7 +36,7 @@ content/
 | From Internet | Links, short sourced excerpts, articles, and ideas encountered online |
 | Hinduism | Notes on texts, philosophy, traditions, interpretations, and personal reflections |
 
-Nested subfolders can organize authors, books, or themes. The current builder groups their entries under the configured top-level category; it does not provide separate child-folder filters. When adding or renaming a top-level category, also update `FOLDERS` in `build.py`.
+Nested subfolders can organize authors, books, or themes. The builder groups their entries under the top-level category; it does not provide separate child-folder filters. New top-level folders under `content/` are discovered automatically and appear as categories on the homepage. Keep unpublished or private drafts outside `content/`.
 
 ## A suggested entry
 

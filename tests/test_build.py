@@ -21,7 +21,7 @@ class BlogTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
         shutil.copytree(build.ROOT / 'assets', self.root / 'assets')
-        for folder in build.FOLDERS:
+        for folder in build.DEFAULT_FOLDERS:
             (self.root / 'content' / folder).mkdir(parents=True)
         self.patch = patch.object(build, 'ROOT', self.root)
         self.patch.start()
@@ -58,7 +58,7 @@ class BlogTests(unittest.TestCase):
         pdf = next(e for e in entries if e['type'] == 'PDF')
         self.assertIn('type="application/pdf"', (self.root / 'dist' / pdf['url']).read_text(encoding='utf-8'))
         home = (self.root / 'dist' / 'index.html').read_text(encoding='utf-8')
-        for folder in build.FOLDERS: self.assertIn(folder, home)
+        for folder in build.DEFAULT_FOLDERS: self.assertIn(folder, home)
         self.assertTrue((self.root / 'dist' / 'files' / 'Fiction' / 'word.docx').exists())
 
     def test_deletion_removes_old_pages(self):
@@ -75,15 +75,19 @@ class BlogTests(unittest.TestCase):
 
 
     def test_commonplace_identity_and_all_categories(self):
-        for folder in build.FOLDERS:
+        for folder in build.DEFAULT_FOLDERS:
             (self.root / 'content' / folder / 'entry.md').write_text(
                 '# A passage from ' + folder, encoding='utf-8')
+        new_category = self.root / 'content' / 'New Category'
+        new_category.mkdir()
+        (new_category / 'new-entry.md').write_text('# A newly categorized note', encoding='utf-8')
         entries = self.run_build()
-        self.assertEqual(len(entries), len(build.FOLDERS))
-        self.assertEqual({e['folder'] for e in entries}, set(build.FOLDERS))
+        self.assertEqual(len(entries), len(build.DEFAULT_FOLDERS) + 1)
+        self.assertEqual({e['folder'] for e in entries}, {*build.DEFAULT_FOLDERS, 'New Category'})
         home = (self.root / 'dist' / 'index.html').read_text(encoding='utf-8')
         self.assertIn('Commonplace Book', home)
-        self.assertIn(f'<strong>{len(build.FOLDERS)}</strong> categories', home)
+        self.assertIn(f'<strong>{len(build.DEFAULT_FOLDERS) + 1}</strong> categories', home)
+        self.assertIn('data-folder="New Category"', home)
         self.assertNotIn('interview', home.lower())
         self.assertNotIn('Threat Hunting', home)
 

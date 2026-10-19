@@ -13,8 +13,14 @@ import mammoth
 import markdown
 
 ROOT = Path(__file__).resolve().parent
-FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism', 'My-Reflections']
+DEFAULT_FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism', 'My-Reflections']
 TYPES = {'.md', '.docx', '.pdf'}
+
+def content_folders(content):
+    """Return configured and newly added top-level content categories."""
+    discovered = [p.name for p in content.iterdir() if p.is_dir() and not p.is_symlink()]
+    return [name for name in DEFAULT_FOLDERS if name in discovered] + sorted(
+        (name for name in discovered if name not in DEFAULT_FOLDERS), key=str.casefold)
 
 def page_id(relative):
     return hashlib.sha256(relative.as_posix().encode()).hexdigest()[:20]
@@ -76,7 +82,8 @@ def build(destination=None):
     (output / 'posts').mkdir(parents=True)
     shutil.copytree(ROOT / 'assets', output / 'assets')
     content = ROOT / 'content'
-    paths = sorted(p for folder in FOLDERS for p in (content / folder).rglob('*')
+    folders = content_folders(content)
+    paths = sorted(p for folder in folders for p in (content / folder).rglob('*')
                    if p.is_file() and p.suffix.lower() in TYPES and not p.is_symlink())
     known = {p.relative_to(content).as_posix(): page_id(p.relative_to(content)) + '.html' for p in paths}
     # Keep linked images and original documents available, excluding hidden files.
@@ -119,14 +126,14 @@ def build(destination=None):
 <a class="download" href="{original}" download>Download original ↗</a><article>{body}</article></main>'''
         (output / 'posts' / known[rel.as_posix()]).write_text(shell(title, article, '../'), encoding='utf-8')
     buttons = '<button class="folder active" data-folder="">All notes <span>' + str(len(entries)) + '</span></button>'
-    for folder in FOLDERS:
+    for folder in folders:
         count = sum(e['folder'] == folder for e in entries)
         buttons += f'<button class="folder" data-folder="{escape(folder)}">{escape(folder)} <span>{count}</span></button>'
     cards = ''.join(f'''<a class="card" href="{escape(e['url'])}" data-folder="{escape(e['folder'])}" data-search="{escape((e['title']+' '+e['excerpt']+' '+e['folder']).lower())}">
 <div class="card-top"><span>{escape(e['folder'])}</span><b>{e['type']}</b></div><h3>{escape(e['title'])}</h3><p>{escape(e['excerpt'])}</p><span class="read">Read note ↗</span></a>''' for e in entries)
     home = f'''<main><section class="hero"><div class="eyebrow">THE COMMONPLACE BOOK</div>
 <h1>A thought worth keeping.<br><em>A page worth returning to.</em></h1><p>Passages, ideas, and reflections gathered from books,<br class="desktop"> the internet, and the questions that stay with me.</p>
-<div class="stats"><strong>{len(entries)}</strong> notes <i></i><strong>{len(FOLDERS)}</strong> categories <i></i>Always learning</div></section>
+<div class="stats"><strong>{len(entries)}</strong> notes <i></i><strong>{len(folders)}</strong> categories <i></i>Always learning</div></section>
 <section class="library"><aside><div class="eyebrow">COLLECTIONS</div><nav aria-label="Filter notes by collection">{buttons}</nav>
 <div class="aside-note">Read. Notice. Connect.<br>Keep what matters.</div></aside>
 <div class="notes"><div class="toolbar"><h2 id="folder-title">All notes</h2><label><span class="sr-only">Search notes</span><input id="search" type="search" placeholder="Search your notes…"></label></div>
