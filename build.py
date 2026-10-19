@@ -13,7 +13,7 @@ import mammoth
 import markdown
 
 ROOT = Path(__file__).resolve().parent
-FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism']
+FOLDERS = ['Fiction', 'Non-fiction', 'From Internet', 'Hinduism', 'My-Reflections']
 TYPES = {'.md', '.docx', '.pdf'}
 
 def page_id(relative):
